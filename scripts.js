@@ -130,8 +130,9 @@ var step_fps = 50;
     b_img_num = cal_img_num;
     imgs_obj.src = "imgs/"+cal_img_num+".png";
     }
-        
-        if (irandom_return())
+    
+    var random_val = irandom_range(0,100);
+        if (random_val <= 250/step_fps)
         {
             for(var i = 0; i <= irandom_range(0,3); i++)
             {
