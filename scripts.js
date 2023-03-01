@@ -18,6 +18,7 @@ var effect_num = 0;
 var repeat_effect = 0;
 var obj_bocchi_y = 0;
 var loading = 0;
+var step_fps = 50;
 
     //onload
     setTimeout(automatic_loading,2000);
@@ -31,9 +32,15 @@ var loading = 0;
     {
     view_width = window.innerWidth;
     view_height = window.innerHeight;
+    c_w = 1920/view_width;
     document.getElementById("body_t").style.background = "radial-gradient(#1f252c,#0b0d0f)";
     document.documentElement.style.setProperty("--view_width",view_width+"px");
     document.documentElement.style.setProperty("--view_height",view_height+"px");
+    
+        if (c_w < 0.8)
+        {
+        step_fps = 100;
+        }
 
         if (loading <= 0)
         {
@@ -49,7 +56,7 @@ var loading = 0;
         setTimeout(bocchi_falling_animation,100);
             if (loading == 0)
             {
-            setTimeout(StepEvent,100);
+            setTimeout(StepEvent,step_fps);
             }
         loading = 1;
         }
@@ -58,15 +65,10 @@ var loading = 0;
     
     $(window).resize(function()
     {
-    view_width = window.innerWidth;
-    view_height = window.innerHeight;
-    c_w = 1920/view_width;
-    document.documentElement.style.setProperty("--view_width",view_width+"px");
-    document.documentElement.style.setProperty("--view_height",view_height+"px");
-    
     loading = -1;
     setTimeout(automatic_loading,10);
     })
+
     
     function bocchi_falling_animation()
     {
@@ -114,7 +116,7 @@ var loading = 0;
     function StepEvent()
     {
     //set bocchi animation
-    img_num += 0.51
+    img_num += 0.51*step_fps/50
         
         if (img_num >= 12.5)
         {
@@ -174,7 +176,7 @@ var loading = 0;
             }
         }
     //step event
-    setTimeout(StepEvent,50);
+    setTimeout(StepEvent,step_fps);
     }
     
     
