@@ -9,7 +9,7 @@ var view_height = window.innerHeight;
 document.documentElement.style.setProperty("--view_width",view_width+"px");
 document.documentElement.style.setProperty("--view_height",view_height+"px");
 
-var c_w = view_width/1920;
+var c_w = 1920/view_width;
 var img_num = 0, b_img_num = 0;
 var imgs_obj = document.getElementById("obj_bocchi");
 var obj_github = document.getElementById("obj_github");
@@ -17,7 +17,7 @@ var falling_effect = [];
 var effect_num = 0;
 var repeat_effect = 0;
 var obj_bocchi_y = 0;
-var loading = false;
+var loading = 0;
 
     //onload
     setTimeout(automatic_loading,2000);
@@ -35,22 +35,23 @@ var loading = false;
     document.documentElement.style.setProperty("--view_width",view_width+"px");
     document.documentElement.style.setProperty("--view_height",view_height+"px");
 
-        if (loading != true)
+        if (loading <= 0)
         {
-        loading = true;
         imgs_obj.style.cursor = "pointer";
-        imgs_obj.style.width = "300px";
+        imgs_obj.style.width = c_w*300+"px";
         imgs_obj.style.position = "absolute";
         imgs_obj.style.display = "block";
         imgs_obj.style.opacity = "1";
         imgs_obj.style.zIndex = 100;
         imgs_obj.draggable = false;
-        imgs_obj.style.left = view_width*0.5-150+"px";
-        $("input").after(imgs_obj);
-        
-        obj_bocchi_t_y = 320;
-        setTimeout(StepEvent,100);
+        imgs_obj.style.left = view_width*0.5-150*c_w+"px";
+            
         setTimeout(bocchi_falling_animation,100);
+            if (loading == 0)
+            {
+            setTimeout(StepEvent,100);
+            }
+        loading = 1;
         }
     }
    
@@ -59,15 +60,18 @@ var loading = false;
     {
     view_width = window.innerWidth;
     view_height = window.innerHeight;
+    c_w = 1920/view_width;
     document.documentElement.style.setProperty("--view_width",view_width+"px");
     document.documentElement.style.setProperty("--view_height",view_height+"px");
-    c_w = view_width/1920;
+    
+    loading = -1;
+    setTimeout(automatic_loading,10);
     })
     
     function bocchi_falling_animation()
     {
     imgs_obj.style.transition = "top 4s";
-    imgs_obj.style.top = "320px";
+    imgs_obj.style.top = (view_height/1080*320)+"px";
     obj_github.style.opacity = 1;
     }
     
@@ -142,7 +146,7 @@ var loading = false;
             obj_bocchi_y = getComputedStyle(imgs_obj).top;
             
             //css for effect
-            falling_effect[effect_num].style.width = "14px";
+            falling_effect[effect_num].style.width = c_w*14+"px";
             falling_effect[effect_num].style.position = "absolute";
             falling_effect[effect_num].style.display = "block";
             falling_effect[effect_num].style.opacity = "1";
