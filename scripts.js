@@ -13,7 +13,8 @@ var c_w = 1920/view_width;
 var img_num = 0, b_img_num = 0;
 var imgs_obj = document.getElementById("obj_bocchi");
 var obj_github = document.getElementById("obj_github");
-var falling_effect = [];
+var obj_falling_star = document.getElementById("obj_falling_star");
+var falling_effect = [], stars = [];
 var effect_num = 0;
 var repeat_effect = 0;
 var obj_bocchi_y = 0;
@@ -56,7 +57,25 @@ var step_fps = 50;
         setTimeout(bocchi_falling_animation,100);
             if (loading == 0)
             {
+                for(var i = 0; i <= 32/c_w; i++)
+                {
+                var _xx = irandom_range(0,view_width);
+                var _yy = irandom_range(0,view_height*1.5);
+                stars[i] = document.createElement("img");
+                stars[i].style.width = 0;
+                stars[i].opacity = 0;
+                stars[i].src = "imgs/star2.png";
+                stars[i].style.position = "absolute";
+                stars[i].style.display = "block";
+                stars[i].style.zIndex = 98;
+                stars[i].style.top = _yy+"px";
+                stars[i].draggable = false;
+                stars[i].style.left = _xx+"px";
+                document.getElementById("stars_bg").appendChild(stars[i]);
+                setTimeout(stars_animation1,100,i);
+                }
             setTimeout(StepEvent,step_fps);
+            setTimeout(falling_star_animation1,step_fps);
             }
         loading = 1;
         }
@@ -68,6 +87,60 @@ var step_fps = 50;
     loading = -1;
     setTimeout(automatic_loading,10);
     })
+    
+    
+    function falling_star_animation1()
+    {
+    obj_falling_star.style.transition = "top 0s, left 0s";
+    obj_falling_star.style.left = view_width*1.5+"px";
+    obj_falling_star.style.top = irandom_range(0,view_height*0.5)+"px";
+    setTimeout(falling_star_animation2,100);
+    }
+    
+    function falling_star_animation2()
+    {
+    obj_falling_star.style.transition = "top 3s, left 3s";
+    var angle = 230+irandom_range(0,45);
+    obj_falling_star.style.transform = "rotate("+angle+"deg)";
+    obj_falling_star.style.left = parseInt(getComputedStyle(obj_falling_star).left)-lengthdir_x(view_width*1.5,rad(angle))+"px";
+    obj_falling_star.style.top = parseInt(getComputedStyle(obj_falling_star).top)-lengthdir_y(view_height*1.5,rad(angle))+"px";
+    setTimeout(falling_star_animation1,irandom_range(100,5000));
+    }
+    
+    
+    function stars_animation1(num)
+    {
+    var _yy_ = getComputedStyle(stars[num]).top;
+    var scale = irandom_range(5,100)/100;
+    stars[num].style.transition = "top "+scale*100+"s, opacity 5s";
+    stars[num].style.width = c_w*24*(scale)+"px";
+    stars[num].style.top = parseInt(_yy_)-view_height+"px";
+    stars[num].style.opacity = irandom_range(10,100)/100;
+    setTimeout(stars_animation2,100000*scale,num,0);
+    }
+    
+    function stars_animation2(num,mode)
+    {
+    stars[num].style.opacity = 0;
+    setTimeout(stars_animation3,5000,num,mode);
+    }
+    
+    function stars_animation3(num,mode)
+    {
+    var _xx = irandom_range(0,view_width);
+    if (mode == 0)
+    {
+    var _yy = irandom_range(view_height,view_height*1.5);
+    }
+    else
+    {
+    var _yy = irandom_range(0,view_height);
+    }
+    stars[num].style.transition = "top 0s, opacity 0s";
+    stars[num].style.left = _xx+"px";
+    stars[num].style.top = _yy+"px";
+    setTimeout(stars_animation1,100,num);
+    }
 
     
     function bocchi_falling_animation()
@@ -96,6 +169,11 @@ var step_fps = 50;
         if (imgs_obj.style.top != view_height+320+"px")
         {
         imgs_obj.style.top = view_height+320+"px";
+            for(var i = 0; i <= 32/c_w; i++)
+            {
+            var _yy_ = getComputedStyle(stars[i]).top;
+            stars[i].style.top = parseInt(_yy_)-view_height*10+"px";
+            }
         setTimeout(bocchi_interaction_animation1,5000);
         }
     })
@@ -103,6 +181,10 @@ var step_fps = 50;
     function bocchi_interaction_animation1()
     {
     imgs_obj.style.transition = "top 0s";
+        for(var i = 0; i <= 32/c_w; i++)
+        {
+        stars_animation2(i,1);
+        }
     setTimeout(bocchi_interaction_animation2,100);
     }
     
@@ -132,7 +214,7 @@ var step_fps = 50;
     }
     
     var random_val = irandom_range(0,100);
-        if (random_val <= 250/step_fps)
+        if (random_val <= 2000/step_fps)
         {
             for(var i = 0; i <= irandom_range(0,3); i++)
             {
