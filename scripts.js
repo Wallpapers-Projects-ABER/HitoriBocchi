@@ -170,7 +170,7 @@ var step_fps = 50;
     
     function bocchi_interaction_animation2()
     {
-    imgs_obj.style.top = "-300px";
+    imgs_obj.style.top = -300*c_w+"px";
     setTimeout(bocchi_falling_animation,100);
     }
     
