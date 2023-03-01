@@ -13,7 +13,6 @@ var c_w = 1920/view_width;
 var img_num = 0, b_img_num = 0;
 var imgs_obj = document.getElementById("obj_bocchi");
 var obj_github = document.getElementById("obj_github");
-var obj_falling_star = document.getElementById("obj_falling_star");
 var falling_effect = [], stars = [];
 var effect_num = 0;
 var repeat_effect = 0;
@@ -75,7 +74,6 @@ var step_fps = 50;
                 setTimeout(stars_animation1,100,i);
                 }
             setTimeout(StepEvent,step_fps);
-            setTimeout(falling_star_animation1,step_fps);
             }
         loading = 1;
         }
@@ -88,24 +86,6 @@ var step_fps = 50;
     setTimeout(automatic_loading,10);
     })
     
-    
-    function falling_star_animation1()
-    {
-    obj_falling_star.style.transition = "top 0s, left 0s";
-    obj_falling_star.style.left = view_width*1.5+"px";
-    obj_falling_star.style.top = irandom_range(0,view_height*0.5)+"px";
-    setTimeout(falling_star_animation2,100);
-    }
-    
-    function falling_star_animation2()
-    {
-    obj_falling_star.style.transition = "top 3s, left 3s";
-    var angle = 230+irandom_range(0,45);
-    obj_falling_star.style.transform = "rotate("+angle+"deg)";
-    obj_falling_star.style.left = parseInt(getComputedStyle(obj_falling_star).left)-lengthdir_x(view_width*1.5,rad(angle))+"px";
-    obj_falling_star.style.top = parseInt(getComputedStyle(obj_falling_star).top)-lengthdir_y(view_height*1.5,rad(angle))+"px";
-    setTimeout(falling_star_animation1,irandom_range(100,5000));
-    }
     
     
     function stars_animation1(num)
