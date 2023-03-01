@@ -45,7 +45,7 @@ var loading = false;
         imgs_obj.style.opacity = "1";
         imgs_obj.style.zIndex = 100;
         imgs_obj.draggable = false;
-        imgs_obj.style.left = "43%";
+        imgs_obj.style.left = view_width*0.5-150+"px";
         $("input").after(imgs_obj);
         
         obj_bocchi_t_y = 320;
@@ -150,7 +150,7 @@ var loading = false;
             falling_effect[effect_num].style.top = obj_bocchi_y;
             falling_effect[effect_num].style.marginTop = 64+abs(random_xx - 0)*3+"px";
             falling_effect[effect_num].draggable = false;
-            falling_effect[effect_num].style.left = "50%";
+            falling_effect[effect_num].style.left = view_width*0.5+"px";
             falling_effect[effect_num].style.marginLeft = random_xx+"px";
                 if (repeat_effect == 0)
                 {
