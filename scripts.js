@@ -6,6 +6,9 @@ jQuery(document).ready(function($)
 //global val
 var view_width = window.innerWidth;
 var view_height = window.innerHeight;
+document.documentElement.style.setProperty("--view_width",view_width+"px");
+document.documentElement.style.setProperty("--view_height",view_height+"px");
+
 var c_w = view_width/1920;
 var img_num = 0, b_img_num = 0;
 var imgs_obj = document.getElementById("obj_bocchi");
@@ -18,6 +21,7 @@ var loading = false;
 
     //onload
     setTimeout(automatic_loading,2000);
+    preload_images("imgs","png","0","1","2","3","4","5","6","7","8","9","10","11","12");
     window.onload = function()
     {
     automatic_loading();
@@ -25,6 +29,12 @@ var loading = false;
     
     function automatic_loading()
     {
+    view_width = window.innerWidth;
+    view_height = window.innerHeight;
+    document.getElementById("body_t").style.background = "radial-gradient(#1f252c,#0b0d0f)";
+    document.documentElement.style.setProperty("--view_width",view_width+"px");
+    document.documentElement.style.setProperty("--view_height",view_height+"px");
+
         if (loading != true)
         {
         loading = true;
@@ -49,6 +59,8 @@ var loading = false;
     {
     view_width = window.innerWidth;
     view_height = window.innerHeight;
+    document.documentElement.style.setProperty("--view_width",view_width+"px");
+    document.documentElement.style.setProperty("--view_height",view_height+"px");
     c_w = view_width/1920;
     })
     
@@ -99,10 +111,6 @@ var loading = false;
     {
     //set bocchi animation
     img_num += 0.51
-        if (img_num >= 0 && img_num <= 8)
-        {
-        img_num += (8-img_num)/100
-        }
         
         if (img_num >= 12.5)
         {
@@ -124,7 +132,7 @@ var loading = false;
                 if (repeat_effect == 0)
                 {
                 falling_effect[effect_num] = document.createElement("img");
-                falling_effect[effect_num].src = "imgs/spr_circle.png";
+                falling_effect[effect_num].src = "imgs/star2.png";
                 }
             
             //random position of effect
@@ -134,7 +142,7 @@ var loading = false;
             obj_bocchi_y = getComputedStyle(imgs_obj).top;
             
             //css for effect
-            falling_effect[effect_num].style.width = "8px";
+            falling_effect[effect_num].style.width = "14px";
             falling_effect[effect_num].style.position = "absolute";
             falling_effect[effect_num].style.display = "block";
             falling_effect[effect_num].style.opacity = "1";
