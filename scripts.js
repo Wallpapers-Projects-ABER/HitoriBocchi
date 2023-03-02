@@ -10,8 +10,9 @@ document.documentElement.style.setProperty("--view_width",view_width+"px");
 document.documentElement.style.setProperty("--view_height",view_height+"px");
 
 var c_w = 1920/view_width;
-var img_num = 0, b_img_num = 0;
+var img_num = 0, b_img_num = 0, star_img_num = 0, b_star_img_num = 0;
 var imgs_obj = document.getElementById("obj_bocchi");
+var star_imgs_obj = document.getElementById("obj_star");
 var obj_github = document.getElementById("obj_github");
 var falling_effect = [], stars = [];
 var effect_num = 0;
@@ -22,7 +23,7 @@ var step_fps = 50;
 
     //onload
     setTimeout(automatic_loading,2000);
-    preload_images("imgs","png","0","1","2","3","4","5","6","7","8","9","10","11","12");
+    preload_images("imgs","png","0","1","2","3","4","5","6","7","8","9","10","11","12","star_anime0","star_anime1","star_anime2","star_anime3","star_anime4","star_anime5","star_anime6","star_anime7");
     window.onload = function()
     {
     automatic_loading();
@@ -37,7 +38,7 @@ var step_fps = 50;
     document.documentElement.style.setProperty("--view_width",view_width+"px");
     document.documentElement.style.setProperty("--view_height",view_height+"px");
     
-        if (c_w < 0.8)
+        if (view_width < 1500)
         {
         step_fps = 100;
         }
@@ -74,6 +75,7 @@ var step_fps = 50;
                 setTimeout(stars_animation1,100,i);
                 }
             setTimeout(StepEvent,step_fps);
+            setTimeout(falling_star,irandom_range(1000,3000));
             }
         loading = 1;
         }
@@ -86,6 +88,20 @@ var step_fps = 50;
     setTimeout(automatic_loading,10);
     })
     
+    
+    function falling_star()
+    {
+    star_img_num = 0;
+    star_imgs_obj.style.opacity = 1;
+    star_imgs_obj.src = "imgs/star_anime0.png";
+    var scale__ = irandom_range(616,916)
+    star_imgs_obj.style.width = scale__+"px";
+    star_imgs_obj.style.top = irandom_range(100,view_height*0.5)+"px";
+    star_imgs_obj.style.left = irandom_range(view_width*0.2,view_width*0.45)+"px";
+    star_imgs_obj.style.transform = "rotate("+(irandom_range(0,90)-45)+"deg)";
+    star_imgs_obj.style.filter = "blur("+scale__/400+"px)" 
+    setTimeout(falling_star,irandom_range(4000,10000));
+    }
     
     
     function stars_animation1(num)
@@ -179,6 +195,7 @@ var step_fps = 50;
     {
     //set bocchi animation
     img_num += 0.51*step_fps/50
+    star_img_num += 0.7*step_fps/50
         
         if (img_num >= 12.5)
         {
@@ -191,6 +208,20 @@ var step_fps = 50;
     {
     b_img_num = cal_img_num;
     imgs_obj.src = "imgs/"+cal_img_num+".png";
+    }
+    
+    var cal_star_img_num = round(star_img_num);
+    if (cal_star_img_num != b_star_img_num)
+    {
+    b_star_img_num = cal_star_img_num;
+        if (cal_star_img_num <= 6)
+        {
+        star_imgs_obj.src = "imgs/star_anime"+cal_star_img_num+".png";
+        }
+        else
+        {
+        star_imgs_obj.style.opacity = 0
+        }
     }
     
     var random_val = irandom_range(0,100);
