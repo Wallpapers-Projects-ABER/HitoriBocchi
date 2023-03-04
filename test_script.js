@@ -19,6 +19,8 @@ var bg_star_created = 0, obj_bg_star = [], n_bg_star_num = 0;
 var bocchi_effect_created = 0, obj_effect_star = [], n_effect_star_num = 0;
 var loading = 0;
 var step_fps = 50;
+var bocchi_interaction_activated = 0, background_change = 0;
+var automatic_cleaning = 0;
 
     //onload
     setTimeout(automatic_loading,2000);
@@ -82,7 +84,7 @@ var step_fps = 50;
     star_imgs_obj.style.top = irandom_range(100,view_height*0.5)+"px";
     star_imgs_obj.style.left = irandom_range(view_width*0.2,view_width*0.45)+"px";
     star_imgs_obj.style.transform = "rotate("+(irandom_range(0,90)-45)+"deg)";
-    star_imgs_obj.style.filter = "blur("+scale__/400+"px)" 
+    //star_imgs_obj.style.filter = "blur("+scale__/400+"px)" 
     setTimeout(falling_star,irandom_range(4000,10000));
     }
     
@@ -106,18 +108,38 @@ var step_fps = 50;
     {
     imgs_obj.style.transition = "top 4s";
     imgs_obj.style.top = (view_height/1080*320)+"px";
-    obj_github.style.opacity = 1;
+        if (view_width >= 1500)
+        {
+        obj_github.style.opacity = 1;
+        }
+    bocchi_interaction_activated = 0;
     }
     
     //interaction for bocchi
     imgs_obj.addEventListener("click",function()
     {
+    interacting_bocchi();
+    });
+    
+    
+    function interacting_bocchi()
+    {
         if (imgs_obj.style.top != view_height+320+"px")
         {
         imgs_obj.style.top = view_height+320+"px";
-        setTimeout(bocchi_interaction_animation1,5000);
+            for(var i = 0; i < n_bg_star_num-1; i++)
+            {
+            obj_bg_star[i].style.top = "-9999px";
+            }
+            
+            for(var i = 0; i < n_effect_star_num-1; i++)
+            {
+            obj_effect_star[i].style.top = -1280+parseInt(window.getComputedStyle(obj_effect_star[i]).top)+"px";
+            }
+        bocchi_interaction_activated = 1;
+        setTimeout(bocchi_interaction_animation1,6000);
         }
-    })
+    }
     
     function bocchi_interaction_animation1()
     {
@@ -128,19 +150,29 @@ var step_fps = 50;
     function bocchi_interaction_animation2()
     {
     imgs_obj.style.top = -300*c_w+"px";
+        for(var i = 0; i < n_bg_star_num-1; i++)
+        {
+        obj_bg_star[i].style.top = "-64px";
+        }
     setTimeout(bocchi_falling_animation,100);
+    setTimeout(clear_all_star_elements,500);
     }
     
     
     function StepEvent()
     {
     //set bocchi animation
-    img_num += 0.51*step_fps/50
-    star_img_num += 0.7*step_fps/50
+    img_num += 0.51*step_fps/50;
+    star_img_num += 0.7*step_fps/50;
+    
+    if (automatic_cleaning >= 0)
+    {
+    automatic_cleaning ++;
+    }
         
         if (img_num >= 12.5)
         {
-        img_num -= 12.5
+        img_num -= 12.5;
         }
     
     
@@ -165,52 +197,61 @@ var step_fps = 50;
         }
     }
     
+    
+    //clean stars elements automatically
+    if (automatic_cleaning > 600)
+    {
+    interacting_bocchi();
+    automatic_cleaning = -1;
+    }
+    
     //create stars from bocchi
     var random_val = irandom_range(0,100);
     
-        if (bocchi_effect_created == 1)
+        if (automatic_cleaning >= 0 && bocchi_effect_created > 0)
         {
-            for(var i = 0; i < n_effect_star_num; i++)
+        var __ii = n_effect_star_num-1;
+            if (obj_effect_star[__ii])
             {
-            obj_effect_star[i].style.top = -320+parseInt(window.getComputedStyle(obj_effect_star[n_effect_star_num-1]).top)+"px";
-            obj_effect_star[i].style.opacity = 0;
+            obj_effect_star[__ii].style.top = -320-bocchi_interaction_activated*1280+parseInt(window.getComputedStyle(obj_effect_star[__ii]).top)+"px";
+            obj_effect_star[__ii].style.opacity = 0;
             }
         bocchi_effect_created = 0;
         }
     
-        if (random_val <= 2000/step_fps)
+        var bocchi_yy = parseInt(window.getComputedStyle(imgs_obj).top)
+        if (automatic_cleaning >= 0 && bocchi_yy < view_height && random_val <= 2000/step_fps)
         {
-            for(var i = 0; i <= irandom_range(0,3); i++)
-            {
-            var random_xx = (irandom_range(0,100)-60);
-            var _xx = view_width*0.5+random_xx*c_w;
-            var _yy = (parseInt(window.getComputedStyle(imgs_obj).top)+64+abs(random_xx - 0)*3)+"px";
-            obj_effect_star[n_effect_star_num] = document.createElement("img");
-            var transition_time = 5;
-            obj_effect_star[n_effect_star_num].style.width = c_w*14+"px";
-            obj_effect_star[n_effect_star_num].opacity = irandom_range(10,100)/100;
-            obj_effect_star[n_effect_star_num].src = "imgs/star2.png";
-            obj_effect_star[n_effect_star_num].style.position = "absolute";
-            obj_effect_star[n_effect_star_num].style.display = "block";
-            obj_effect_star[n_effect_star_num].style.zIndex = 98;
-            obj_effect_star[n_effect_star_num].style.top = _yy;
-            obj_effect_star[n_effect_star_num].draggable = false;
-            obj_effect_star[n_effect_star_num].style.left = _xx+"px";
-            obj_effect_star[n_effect_star_num].style.transition = "all "+(transition_time)+"s";
-            stars_bg.appendChild(obj_effect_star[n_effect_star_num]);
-            setTimeout(instance_destroy,transition_time*1000,obj_effect_star[n_effect_star_num]);
-            n_effect_star_num ++;
-            bocchi_effect_created = 1;
-            }
+        var random_xx = (irandom_range(0,100)-60);
+        var _xx = view_width*0.5+random_xx*c_w;
+        var _yy = (bocchi_yy+90+abs(random_xx - 0)*3)+"px";
+        obj_effect_star[n_effect_star_num] = document.createElement("img");
+        var transition_time = 4;
+        obj_effect_star[n_effect_star_num].style.width = c_w*12+"px";
+        obj_effect_star[n_effect_star_num].opacity = irandom_range(10,100)/100;
+        obj_effect_star[n_effect_star_num].src = "imgs/star2.png";
+        obj_effect_star[n_effect_star_num].style.position = "absolute";
+        obj_effect_star[n_effect_star_num].style.display = "block";
+        obj_effect_star[n_effect_star_num].style.zIndex = 98;
+        obj_effect_star[n_effect_star_num].style.top = _yy;
+        obj_effect_star[n_effect_star_num].draggable = false;
+        obj_effect_star[n_effect_star_num].style.left = _xx+"px";
+        obj_effect_star[n_effect_star_num].style.transition = "all "+(transition_time)+"s";
+        stars_bg.appendChild(obj_effect_star[n_effect_star_num]);
+        n_effect_star_num ++;
+        bocchi_effect_created = 1;
         }
         
-        if (bg_star_created == 1)
+        if (automatic_cleaning >= 0 && bg_star_created == 1)
         {
-        obj_bg_star[n_bg_star_num-1].style.top = "-64px";
+            if (obj_bg_star[n_bg_star_num-1])
+            {
+            obj_bg_star[n_bg_star_num-1].style.top = "-64px";
+            }
         bg_star_created = 0;
         }
         
-        if (random_val <= 150/step_fps)
+        if (automatic_cleaning >= 0 && bocchi_yy < view_height*0.7 && random_val <= 150/step_fps)
         {
         var _xx = irandom_range(0,view_width);
         var _yy = view_height;
@@ -228,7 +269,6 @@ var step_fps = 50;
         obj_bg_star[n_bg_star_num].style.left = _xx+"px";
         obj_bg_star[n_bg_star_num].style.transition = "top "+(transition_time)+"s";
         stars_bg.appendChild(obj_bg_star[n_bg_star_num]);
-        setTimeout(instance_destroy,transition_time*1000,obj_bg_star[n_bg_star_num]);
         n_bg_star_num ++;
         bg_star_created = 1;
         }
@@ -236,11 +276,24 @@ var step_fps = 50;
     setTimeout(StepEvent,step_fps);
     }
     
-    
-    function instance_destroy(ele)
+    function clear_all_star_elements()
     {
-    ele.remove();
+        for(var i = 0; i <= n_bg_star_num-1; i++)
+        {
+        obj_bg_star[i].remove();
+        }
+        
+        for(var ii = 0; ii <= n_effect_star_num-1; ii++)
+        {
+        obj_effect_star[ii].remove();
+        }
+        
+    n_bg_star_num = 0;
+    n_effect_star_num = 0;
+    automatic_cleaning = 0;
     }
+
+
 
 
     // let be = Date.now(),fps=0,info='';

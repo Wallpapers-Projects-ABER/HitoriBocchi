@@ -1,0 +1,11 @@
+Hitori bocchi [ぼっち・ざ・ろっく! - Bocchi the Rock!]
+(ぼっちざろっく!)
+(孤独摇滚)
+
+
+Source :
+https://github.com/ABER1047/HitoriBocchi
+
+
+[click bocchi to interact]
+[PC/Mobile enable]
