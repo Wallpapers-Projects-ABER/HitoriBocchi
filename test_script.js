@@ -14,10 +14,9 @@ var img_num = 0, b_img_num = 0, star_img_num = 0, b_star_img_num = 0;
 var imgs_obj = document.getElementById("obj_bocchi");
 var star_imgs_obj = document.getElementById("obj_star");
 var obj_github = document.getElementById("obj_github");
-var falling_effect = [], stars = [];
-var effect_num = 0;
-var repeat_effect = 0;
-var obj_bocchi_y = 0;
+var stars_bg = document.getElementById("stars_bg");
+var bg_star_created = 0, obj_bg_star = [], n_bg_star_num = 0;
+var bocchi_effect_created = 0, obj_effect_star = [], n_effect_star_num = 0;
 var loading = 0;
 var step_fps = 50;
 
@@ -57,23 +56,6 @@ var step_fps = 50;
         setTimeout(bocchi_falling_animation,100);
             if (loading == 0)
             {
-                for(var i = 0; i <= 32/c_w; i++)
-                {
-                var _xx = irandom_range(0,view_width);
-                var _yy = irandom_range(0,view_height*1.5);
-                stars[i] = document.createElement("img");
-                stars[i].style.width = 0;
-                stars[i].opacity = 0;
-                stars[i].src = "imgs/star2.png";
-                stars[i].style.position = "absolute";
-                stars[i].style.display = "block";
-                stars[i].style.zIndex = 98;
-                stars[i].style.top = _yy+"px";
-                stars[i].draggable = false;
-                stars[i].style.left = _xx+"px";
-                document.getElementById("stars_bg").appendChild(stars[i]);
-                setTimeout(stars_animation1,100,stars[i],_yy);
-                }
             setTimeout(StepEvent,step_fps);
             setTimeout(falling_star,irandom_range(1000,3000));
             }
@@ -89,6 +71,7 @@ var step_fps = 50;
     })
     
     
+    //별똥별
     function falling_star()
     {
     star_img_num = 0;
@@ -103,48 +86,7 @@ var step_fps = 50;
     setTimeout(falling_star,irandom_range(4000,10000));
     }
     
-    
-    function stars_animation1(obj,_yy)
-    {
-    var scale = irandom_range(5,100)/100;
-    obj.style.transition = "top "+floor(scale*100)+"s, opacity 5s";
-    obj.style.width = c_w*24*(scale)+"px";
-    obj.style.top = (_yy-view_height)+"px";
-    obj.style.opacity = irandom_range(10,100)/100;
-    setTimeout(stars_animation2,100000*scale,obj,0,_yy);
-    }
-    
-    function stars_animation2(obj,mode)
-    {
-    obj.style.opacity = 0;
-    setTimeout(stars_animation3,5000,obj,mode);
-    }
-    
-    function stars_animation3(obj,mode)
-    {
-    var _xx = irandom_range(0,view_width);
-    if (mode == 0)
-    {
-    var _yy = irandom_range(view_height,view_height*1.5);
-    }
-    else
-    {
-    var _yy = irandom_range(0,view_height);
-    }
-    obj.style.transition = "none";
-    obj.style.left = _xx+"px";
-    obj.style.top = _yy+"px";
-    setTimeout(stars_animation1,100,obj,_yy);
-    }
 
-    
-    function bocchi_falling_animation()
-    {
-    imgs_obj.style.transition = "top 4s";
-    imgs_obj.style.top = (view_height/1080*320)+"px";
-    obj_github.style.opacity = 1;
-    }
-    
     
     //animation for obj_github
     obj_github.addEventListener("mouseover",function()
@@ -158,17 +100,21 @@ var step_fps = 50;
     })
     
     
+    
+    
+    function bocchi_falling_animation()
+    {
+    imgs_obj.style.transition = "top 4s";
+    imgs_obj.style.top = (view_height/1080*320)+"px";
+    obj_github.style.opacity = 1;
+    }
+    
     //interaction for bocchi
     imgs_obj.addEventListener("click",function()
     {
         if (imgs_obj.style.top != view_height+320+"px")
         {
         imgs_obj.style.top = view_height+320+"px";
-            for(var i = 0; i <= 32/c_w; i++)
-            {
-            var _yy_ = window.getComputedStyle(stars[i]).top;
-            stars[i].style.top = floor(parseInt(_yy_)-view_height*10)+"px";
-            }
         setTimeout(bocchi_interaction_animation1,5000);
         }
     })
@@ -176,10 +122,6 @@ var step_fps = 50;
     function bocchi_interaction_animation1()
     {
     imgs_obj.style.transition = "none";
-        for(var i = 0; i <= 32/c_w; i++)
-        {
-        stars_animation2(stars[i],1);
-        }
     setTimeout(bocchi_interaction_animation2,100);
     }
     
@@ -223,69 +165,84 @@ var step_fps = 50;
         }
     }
     
+    //create stars from bocchi
     var random_val = irandom_range(0,100);
+    
+        if (bocchi_effect_created == 1)
+        {
+            for(var i = 0; i < n_effect_star_num; i++)
+            {
+            obj_effect_star[i].style.top = -320+parseInt(window.getComputedStyle(obj_effect_star[n_effect_star_num-1]).top)+"px";
+            obj_effect_star[i].style.opacity = 0;
+            }
+        bocchi_effect_created = 0;
+        }
+    
         if (random_val <= 2000/step_fps)
         {
             for(var i = 0; i <= irandom_range(0,3); i++)
             {
-                if (repeat_effect == 0)
-                {
-                falling_effect[effect_num] = document.createElement("img");
-                falling_effect[effect_num].src = "imgs/star2.png";
-                }
-            
-            //random position of effect
-            var random_xx = -48+irandom_range(0,104);
-            
-            //real position of bocchi
-            obj_bocchi_y = window.getComputedStyle(imgs_obj).top;
-            
-            //css for effect
-            falling_effect[effect_num].style.width = c_w*14+"px";
-            falling_effect[effect_num].style.position = "absolute";
-            falling_effect[effect_num].style.display = "block";
-            falling_effect[effect_num].style.opacity = "1";
-            falling_effect[effect_num].style.zIndex = 99;
-            falling_effect[effect_num].style.top = obj_bocchi_y;
-            falling_effect[effect_num].style.marginTop = 64+abs(random_xx - 0)*3+"px";
-            falling_effect[effect_num].draggable = false;
-            falling_effect[effect_num].style.left = view_width*0.5+"px";
-            falling_effect[effect_num].style.marginLeft = random_xx+"px";
-                if (repeat_effect == 0)
-                {
-                document.getElementById("effects").appendChild(falling_effect[effect_num]);
-                }
-            
-            //setting for falling effect
-            setTimeout(falling_effect_setting,100,effect_num);
-            setTimeout(delete_effect,4100,effect_num);
-            effect_num ++
-            
-                if (effect_num >= 256)
-                {
-                repeat_effect = 1;
-                effect_num = 0
-                }
+            var random_xx = (irandom_range(0,100)-60);
+            var _xx = view_width*0.5+random_xx*c_w;
+            var _yy = (parseInt(window.getComputedStyle(imgs_obj).top)+64+abs(random_xx - 0)*3)+"px";
+            obj_effect_star[n_effect_star_num] = document.createElement("img");
+            var transition_time = 5;
+            obj_effect_star[n_effect_star_num].style.width = c_w*14+"px";
+            obj_effect_star[n_effect_star_num].opacity = irandom_range(10,100)/100;
+            obj_effect_star[n_effect_star_num].src = "imgs/star2.png";
+            obj_effect_star[n_effect_star_num].style.position = "absolute";
+            obj_effect_star[n_effect_star_num].style.display = "block";
+            obj_effect_star[n_effect_star_num].style.zIndex = 98;
+            obj_effect_star[n_effect_star_num].style.top = _yy;
+            obj_effect_star[n_effect_star_num].draggable = false;
+            obj_effect_star[n_effect_star_num].style.left = _xx+"px";
+            obj_effect_star[n_effect_star_num].style.transition = "all "+(transition_time)+"s";
+            stars_bg.appendChild(obj_effect_star[n_effect_star_num]);
+            setTimeout(instance_destroy,transition_time*1000,obj_effect_star[n_effect_star_num]);
+            n_effect_star_num ++;
+            bocchi_effect_created = 1;
             }
+        }
+        
+        if (bg_star_created == 1)
+        {
+        obj_bg_star[n_bg_star_num-1].style.top = "-64px";
+        bg_star_created = 0;
+        }
+        
+        if (random_val <= 150/step_fps)
+        {
+        var _xx = irandom_range(0,view_width);
+        var _yy = view_height;
+        obj_bg_star[n_bg_star_num] = document.createElement("img");
+        var scale = irandom_range(5,100)/100;
+        var transition_time = (scale*60);
+        obj_bg_star[n_bg_star_num].style.width = c_w*24*(scale)+"px";
+        obj_bg_star[n_bg_star_num].opacity = irandom_range(10,100)/100;
+        obj_bg_star[n_bg_star_num].src = "imgs/star2.png";
+        obj_bg_star[n_bg_star_num].style.position = "absolute";
+        obj_bg_star[n_bg_star_num].style.display = "block";
+        obj_bg_star[n_bg_star_num].style.zIndex = 98;
+        obj_bg_star[n_bg_star_num].style.top = _yy+"px";
+        obj_bg_star[n_bg_star_num].draggable = false;
+        obj_bg_star[n_bg_star_num].style.left = _xx+"px";
+        obj_bg_star[n_bg_star_num].style.transition = "top "+(transition_time)+"s";
+        stars_bg.appendChild(obj_bg_star[n_bg_star_num]);
+        setTimeout(instance_destroy,transition_time*1000,obj_bg_star[n_bg_star_num]);
+        n_bg_star_num ++;
+        bg_star_created = 1;
         }
     //step event
     setTimeout(StepEvent,step_fps);
     }
     
     
-    function falling_effect_setting(num)
+    function instance_destroy(ele)
     {
-    falling_effect[num].style.transition = "top 4s, opacity 4s, width 4s";
-    falling_effect[num].style.opacity = "0";
-    falling_effect[num].style.top = floor(parseInt(obj_bocchi_y)-320)+"px";
-    falling_effect[num].style.width = "0px";
+    ele.remove();
     }
 
-    function delete_effect(num)
-    {
-    falling_effect[num].style.transition = "none";
-    }
-    
+
     // let be = Date.now(),fps=0,info='';
     // requestAnimationFrame(function loop(){
     //     let now = Date.now()
