@@ -28,7 +28,7 @@ https://aber1047.github.io/HitoriBocchi/
 
 
 #### [click bocchi to interact]
-#### [PC/Mobile enabled]
+#### [PC/Mobile available]
 
 
 
