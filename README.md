@@ -26,9 +26,11 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2942134225
 https://aber1047.github.io/HitoriBocchi/
 
 
+</br>
 
-#### [click bocchi to interact]
-#### [PC/Mobile enable]
+##### Time responsive
+##### click bocchi to interact
+##### PC/Mobile available
 
 
 
