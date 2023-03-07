@@ -15,12 +15,16 @@ var imgs_obj = document.getElementById("obj_bocchi");
 var star_imgs_obj = document.getElementById("obj_star");
 var obj_github = document.getElementById("obj_github");
 var stars_bg = document.getElementById("stars_bg");
+var dawn_bg = document.getElementById("bg_dawn");
 var bg_star_created = 0, obj_bg_star = [], n_bg_star_num = 0;
 var bocchi_effect_created = 0, obj_effect_star = [], n_effect_star_num = 0;
 var loading = 0;
 var step_fps = 50;
 var bocchi_interaction_activated = 0, background_change = 0;
 var automatic_cleaning = 0;
+var datetime = new Date().getHours();
+var redecorate = 0;
+
 
     //onload
     setTimeout(automatic_loading,2000);
@@ -35,7 +39,9 @@ var automatic_cleaning = 0;
     view_width = window.innerWidth;
     view_height = window.innerHeight;
     c_w = 1920/view_width;
-    document.getElementById("body_t").style.background = "radial-gradient(#1f252c,#0b0d0f)";
+    document.getElementById("bg_night").style.background = "radial-gradient(#1f252c,#0b0d0f)";
+    document.getElementById("bg_night").style.opacity = 1;
+    dawn_bg.style.background = "linear-gradient(#12355b,#476a7e)";
     document.documentElement.style.setProperty("--view_width",view_width+"px");
     document.documentElement.style.setProperty("--view_height",view_height+"px");
     
@@ -58,8 +64,10 @@ var automatic_cleaning = 0;
         setTimeout(bocchi_falling_animation,100);
             if (loading == 0)
             {
+            redecorate = 1;
             setTimeout(StepEvent,step_fps);
             setTimeout(falling_star,irandom_range(1000,3000));
+            setTimeout(redecorating,600);
             }
         loading = 1;
         }
@@ -76,13 +84,27 @@ var automatic_cleaning = 0;
     //별똥별
     function falling_star()
     {
+    var scale__ = irandom_range(616,916);
+    var random_xx = irandom_range(view_width*0.2,view_width*0.45);
+    var random_yy = irandom_range(100,view_height*0.5);
+    if (view_width < 1500)
+    {
+        if (random_xx+scale__ > view_width)
+        {
+        random_xx = view_width-scale__;
+        }
+        
+        if (random_yy+(scale__/616)*182 > view_height)
+        {
+        random_yy = view_height-(scale__/616)*182;
+        }
+    }
     star_img_num = 0;
     star_imgs_obj.style.opacity = 1;
     star_imgs_obj.src = "imgs/star_anime0.png";
-    var scale__ = irandom_range(616,916)
     star_imgs_obj.style.width = scale__+"px";
     star_imgs_obj.style.top = irandom_range(100,view_height*0.5)+"px";
-    star_imgs_obj.style.left = irandom_range(view_width*0.2,view_width*0.45)+"px";
+    star_imgs_obj.style.left = random_xx+"px";
     star_imgs_obj.style.transform = "rotate("+(irandom_range(0,90)-45)+"deg)";
     //star_imgs_obj.style.filter = "blur("+scale__/400+"px)" 
     setTimeout(falling_star,irandom_range(4000,10000));
@@ -124,6 +146,7 @@ var automatic_cleaning = 0;
     
     function interacting_bocchi()
     {
+    automatic_cleaning = -1;
         if (imgs_obj.style.top != view_height+320+"px")
         {
         imgs_obj.style.top = view_height+320+"px";
@@ -156,6 +179,7 @@ var automatic_cleaning = 0;
         }
     setTimeout(bocchi_falling_animation,100);
     setTimeout(clear_all_star_elements,500);
+    setTimeout(redecorating,1000);
     }
     
     
@@ -202,7 +226,6 @@ var automatic_cleaning = 0;
     if (automatic_cleaning > 600)
     {
     interacting_bocchi();
-    automatic_cleaning = -1;
     }
     
     //create stars from bocchi
@@ -224,7 +247,7 @@ var automatic_cleaning = 0;
         {
         var random_xx = (irandom_range(0,100)-60);
         var _xx = view_width*0.5+random_xx*c_w;
-        var _yy = (bocchi_yy+90+abs(random_xx - 0)*3)+"px";
+        var _yy = (bocchi_yy+90+abs(random_xx + 10)*3)+"px";
         obj_effect_star[n_effect_star_num] = document.createElement("img");
         var transition_time = 4;
         obj_effect_star[n_effect_star_num].style.width = c_w*12+"px";
@@ -246,15 +269,23 @@ var automatic_cleaning = 0;
         {
             if (obj_bg_star[n_bg_star_num-1])
             {
-            obj_bg_star[n_bg_star_num-1].style.top = "-64px";
+            var current_y = parseInt(window.getComputedStyle(obj_bg_star[n_bg_star_num-1]).top)
+            obj_bg_star[n_bg_star_num-1].style.top = current_y-view_height-64+"px";
+            obj_bg_star[n_bg_star_num-1].style.opacity = 1;
             }
         bg_star_created = 0;
         }
         
-        if (automatic_cleaning >= 0 && bocchi_yy < view_height*0.7 && random_val <= 150/step_fps)
+        if (automatic_cleaning >= 0 && bocchi_yy < view_height*0.7 && (random_val <= 150/step_fps || redecorate == 1) )
         {
         var _xx = irandom_range(0,view_width);
         var _yy = view_height;
+        var distance__ = 0;
+        if (redecorate == 1)
+        {
+        _yy = irandom_range(0,view_height);
+        distance__ = point_distance(view_width*0.5,view_height*0.5,_xx,_yy);
+        }
         obj_bg_star[n_bg_star_num] = document.createElement("img");
         var scale = irandom_range(5,100)/100;
         var transition_time = (scale*60);
@@ -267,11 +298,14 @@ var automatic_cleaning = 0;
         obj_bg_star[n_bg_star_num].style.top = _yy+"px";
         obj_bg_star[n_bg_star_num].draggable = false;
         obj_bg_star[n_bg_star_num].style.left = _xx+"px";
-        obj_bg_star[n_bg_star_num].style.transition = "top "+(transition_time)+"s";
+        obj_bg_star[n_bg_star_num].style.opacity = 0;
+        obj_bg_star[n_bg_star_num].style.transition = "top "+(transition_time)+"s, opacity "+(3+floor(distance__/500))+"s";
         stars_bg.appendChild(obj_bg_star[n_bg_star_num]);
         n_bg_star_num ++;
         bg_star_created = 1;
         }
+        
+        
     //step event
     setTimeout(StepEvent,step_fps);
     }
@@ -291,6 +325,28 @@ var automatic_cleaning = 0;
     n_bg_star_num = 0;
     n_effect_star_num = 0;
     automatic_cleaning = 0;
+    redecorate = 1;
+    }
+    
+    function redecorating()
+    {
+    redecorate = 0;
+    
+    //time-lapse background
+    datetime = new Date().getHours()-3;
+        if (datetime < 7)
+        {
+        dawn_bg.style.opacity = 1 - abs(datetime-7)/10;
+        }
+        else if (datetime > 9)
+        {
+        dawn_bg.style.opacity = 1 - abs(datetime-9)/10;
+        }
+        else
+        {
+        dawn_bg.style.opacity = 1;
+        }
+    debug_log(dawn_bg.style.opacity);
     }
 
 

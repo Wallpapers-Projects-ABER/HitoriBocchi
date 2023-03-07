@@ -8,25 +8,18 @@
     <title>HitoriBocchi</title>
 
     <body id = "body_t" class = "body_t">
-        <style>
-        .body_t
-        {
-        overflow-x : hidden;
-        overflow-y : hidden;
-        background : #1f252c;
-        width : var(--view_width);
-        height : var(--view_height);
-        z-index : 0;
-        }
-        </style>
         
-        <img class = "obj_star" id = "obj_star" src = "imgs/star_anime0.png" style = "opacity : 0; position : absolute;">
-        <img class = "obj_bocchi" id = "obj_bocchi" src = "imgs/0.png" style = "top : -300px; opacity : 0;">
+        <!-- background -->
+        <div class = "bg_night" id = "bg_night" style = "opacity : 0"></div>
+        <div class = "bg_dawn" id = "bg_dawn" style = "opacity : 0"></div>
+        
+        <img class = "obj_star" id = "obj_star" src = "imgs/star_anime0.png" style = "opacity : 0; position : absolute; z-index : 10">
+        <img class = "obj_bocchi" id = "obj_bocchi" src = "imgs/0.png" style = "top : -300px; opacity : 0; z-index : 11">
         <a href = "https://github.com/ABER1047/Falling-Bocchi" target = "_blank">
-        <img class = "obj_github" id = "obj_github" src = "imgs/github_icon_white.png" style = "position : absolute; top : 94%; left : 98%; width : 32px; opacity : 0; transition : opacity 1s; cursor : pointer;">
+        <img class = "obj_github" id = "obj_github" src = "imgs/github_icon_white.png" style = "position : absolute; top : 2%; left : 98%; width : 32px; opacity : 0; transition : opacity 1s; cursor : pointer; z-index : 10">
         </a>
-        <div id = "effects"></div>
-        <div id = "stars_bg"></div>
+        <div id = "effects" style = "z-index : 10"></div>
+        <div id = "stars_bg" style = "z-index : 10"></div>
         
         <!-- <span id="kFps"></span>
         <progress id="kpFps" value="0" min="0" max="100" style="vertical-align:middle"></progress>
@@ -35,7 +28,7 @@
         <script class = "jsbin" src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
         <script class = "jsbin" src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
         <script src = "https://cdn.jsdelivr.net/gh/ABER1047/Forme@main/scripts.js"></script>
-        <script src = "test_script.js"></script>
+        <script src = "main_script.js"></script>
         <link rel = "stylesheet" href = "designs.css">
     </body>
 </html>
