@@ -1,9 +1,14 @@
 
+div
+{
+overflow-x : hidden;
+overflow-y : hidden;
+}
+
 .body_t
 {
 overflow-x : hidden;
 overflow-y : hidden;
-background : #1f252c;
 width : var(--view_width);
 height : var(--view_height);
 z-index : 0;
