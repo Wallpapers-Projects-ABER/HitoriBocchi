@@ -1,6 +1,8 @@
 
 
 
+
+
 jQuery(document).ready(function($)
 {
 //global val
@@ -22,8 +24,9 @@ var loading = 0;
 var step_fps = 50;
 var bocchi_interaction_activated = 0, background_change = 0;
 var automatic_cleaning = 0;
-var datetime = new Date().getHours();
+var datetime = new Date().getHours()-3;
 var redecorate = 0;
+var refresh_bg = 0;
 
 
     //onload
@@ -62,6 +65,9 @@ var redecorate = 0;
         imgs_obj.style.left = view_width*0.5-150*c_w+"px";
             
         setTimeout(bocchi_falling_animation,100);
+        set_bg_by_time();
+
+            
             if (loading == 0)
             {
             redecorate = 1;
@@ -189,6 +195,15 @@ var redecorate = 0;
     img_num += 0.51*step_fps/50;
     star_img_num += 0.7*step_fps/50;
     
+    //time-lapse background
+    refresh_bg ++;
+    if (refresh_bg > 25)
+    {
+    set_bg_by_time();
+    refresh_bg = 0;
+    }
+
+    //clear star element automatically
     if (automatic_cleaning >= 0)
     {
     automatic_cleaning ++;
@@ -331,8 +346,12 @@ var redecorate = 0;
     function redecorating()
     {
     redecorate = 0;
-    
-    //time-lapse background
+    }
+
+
+
+    function set_bg_by_time()
+    {
     datetime = new Date().getHours()-3;
         if (datetime < 7)
         {
@@ -348,8 +367,6 @@ var redecorate = 0;
         }
     debug_log(dawn_bg.style.opacity);
     }
-
-
 
 
     // let be = Date.now(),fps=0,info='';

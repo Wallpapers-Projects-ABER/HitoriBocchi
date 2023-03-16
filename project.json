@@ -1,23 +1,37 @@
 {
-    "workshopid" : "2942134225",
-	"description" : "Hitori bocchi [ぼっち・ざ・ろっく! - Bocchi the Rock!]
-Bocchi the rock
+    "workshopid" : "",
+	"description" : "[img]https://i.imgur.com/Ddktk2L.gif[/img]
+
+
+[h1] Hitori bocchi [ぼっち・ざ・ろっく! - Bocchi the Rock!] [/h1]
+[h3] 
+Bocchi the rock!
+Bocchi
+Gotou hitori
 ぼっちざろっく!
 孤独摇滚
-孤獨搖滾！
-
-
-
-- Time responsive wallpaper
-- click bocchi to interact
-- PC/Mobile available
+孤獨搖滾
+[/h3]
 
 
 
 
-- Source :
+
+[b] - Time responsive wallpaper [/b]
+[b] - click bocchi to interact [/b]
+
+
+
+
+
+
+[b] - Source : [/b]
+
+https://aber1047.github.io/HitoriBocchi/
 
 https://github.com/ABER1047/HitoriBocchi
+
+[b] (PC/Mobile available) [/b]
 
 
 
@@ -28,14 +42,15 @@ https://github.com/ABER1047/HitoriBocchi
 
 
 
-- Other works :
+
+[b] - Other works : [/b]
 
 https://steamcommunity.com/id/324tyAQASDG/myworkshopfiles/
 
 
 
 
-- Q/A :
+[b] - Q/A : [/b]
 
 国内小伙伴用不了的原因是谷歌没有在国内开放ajax公共库服务
 将html内 ajax.googleapis.com替换为国内镜像ajax.lug.ustc.edu.cn即可",
@@ -55,6 +70,6 @@ https://steamcommunity.com/id/324tyAQASDG/myworkshopfiles/
 	},
 	"preview" : "Preview_new.gif",
 	"tags" : ["Anime"],
-	"title" : "Hitori bocchi [ぼっち・ざ・ろっく! - Bocchi the Rock!]",
+	"title" : "[Day/Night] Hitori bocchi (ぼっち・ざ・ろっく! - Bocchi the Rock!)",
 	"visibility" : "public"
 }
