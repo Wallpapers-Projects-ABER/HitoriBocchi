@@ -1,6 +1,6 @@
 <div align = "center">
 
-![preview_2](Preview.gif)
+![preview_2](Preview_new.gif)
 
 # Hitori Bocchi - [Bocchi the Rock! - ぼっち・ざ・ろっく！]
 ###### Hitori bocchi [ぼっち・ざ・ろっく! - Bocchi the Rock!]
